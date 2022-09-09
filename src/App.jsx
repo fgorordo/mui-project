@@ -1,33 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import Navbar from './components/Navbar/Navbar';
+import AppRouter from './routes/AppRouter';
+import Grid from '@mui/material/Grid';
+import { ThemeProvider } from '@mui/material/styles';
+import { dashboardTheme } from './dashboardTheme.jsx'
+import CssBaseline from '@mui/material/CssBaseline';
+import Header from './components/Header/Header';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [title, setTitle] = useState(null);
+  const location = useLocation();
+  
+  useEffect(() => {
+    const parsedTitle = location.pathname.replace(/\W/g, ' ')
+    setTitle(parsedTitle)
+  },[location])
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <>
+      <CssBaseline />
+      <ThemeProvider theme={dashboardTheme}>
+        <Grid container>
+          <Navbar />
+          <Grid
+            item
+            sx={{ marginLeft: '320px' }}
+            xl={10}
+            md={10}
+            sm={10}
+
+          >
+            <Header title={title}
+              sx={{ marginLeft: '320px' }} />
+            <AppRouter />
+          </Grid>
+        </Grid>
+      </ThemeProvider>
+    </>
   )
 }
 
